@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import NoteList from "./NoteList/NoteList";
 import ExpandedNote from "./ExpandedNotes/ExpandedNote";
 import SideBar from "./SideBar/SideBar";
@@ -19,41 +19,45 @@ class App extends Component {
         <nav></nav>
         <header></header>
         <main>
-          <Route
-            path="/"
-            exact
-            render={(routerProps) => (
-              <NoteList routerProps={routerProps} notes={this.state.notes} />
-            )}
-          />
-          <Route
-            path="/folder/:folderId"
-            exact
-            render={(routerProps) => {
-              console.log(routerProps, routerProps.match.params.folderId);
-              return (
-                <NoteList
-                  routerProps={routerProps}
-                  notes={this.state.notes.filter(
-                    (note) =>
-                      note.folderId === routerProps.match.params.folderId
-                  )}
-                />
-              );
-            }}
-          />
-          <Route
-            path="/note/:noteId"
-            exact
-            render={(routerProps) => {
-              return (
-                <ExpandedNote
-                  routerProps={routerProps}
-                  notes={this.state.notes}
-                />
-              );
-            }}
-          />
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={(routerProps) => (
+                <NoteList routerProps={routerProps} notes={this.state.notes} />
+              )}
+            />
+            <Route
+              path="/folder/:folderId"
+              exact
+              render={(routerProps) => {
+                return (
+                  <NoteList
+                    routerProps={routerProps}
+                    notes={this.state.notes.filter(
+                      (note) =>
+                        note.folderId === routerProps.match.params.folderId
+                    )}
+                  />
+                );
+              }}
+            />
+            <Route
+              path="/note/:noteId"
+              exact
+              render={(routerProps) => {
+                console.log(routerProps);
+                return (
+                  <ExpandedNote
+                    routerProps={routerProps}
+                    note={this.state.notes.find(
+                      (note) => note.id === routerProps.match.params.noteId
+                    )}
+                  />
+                );
+              }}
+            />
+          </Switch>
         </main>
       </div>
     );
