@@ -1,70 +1,63 @@
-import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
-import NoteList from './NoteList/NoteList';
-import ExpandedNotes from './ExpandedNotes/ExpandedNote';
-import SideBar from './SideBar/SideBar';
-import store from './store'
+import React, { Component } from "react";
+import { Route, Link } from "react-router-dom";
+import NoteList from "./NoteList/NoteList";
+import ExpandedNote from "./ExpandedNotes/ExpandedNote";
+import SideBar from "./SideBar/SideBar";
+import store from "./store";
 
 class App extends Component {
-  state={
-    notes:[],
-    folders:[]
-  }
-  componentDidMount(){
-    this.setState({notes:store.notes, folders:store.folders})
+  state = {
+    notes: [],
+    folders: [],
+  };
+  componentDidMount() {
+    this.setState({ notes: store.notes, folders: store.folders });
   }
   render() {
     return (
       <div className="App">
-        <nav>
-
-        </nav>
-        <header>
-
-        </header>
+        <nav></nav>
+        <header></header>
         <main>
-          <Route 
-            path= '/'
+          <Route
+            path="/"
             exact
-            render={(routerProps) =>
-              <NoteList
-                routerProps={routerProps}
-                notes={this.state.notes}
-              />
-            } 
+            render={(routerProps) => (
+              <NoteList routerProps={routerProps} notes={this.state.notes} />
+            )}
           />
-          <Route 
-            path= '/folder/:folderId'
+          <Route
+            path="/folder/:folderId"
             exact
             render={(routerProps) => {
-              console.log(routerProps, routerProps.match.params.folderId)
-              return <NoteList
-                routerProps={routerProps}
-                notes={
-                  this.state.notes.filter(note => 
-                    note.folderId === routerProps.match.params.folderId
+              console.log(routerProps, routerProps.match.params.folderId);
+              return (
+                <NoteList
+                  routerProps={routerProps}
+                  notes={this.state.notes.filter(
+                    (note) =>
+                      note.folderId === routerProps.match.params.folderId
                   )}
-              />
-            }
-            } 
-          />
-          <Route 
-            path='/note/:noteId'
-            exact
-            render={(routerProps) => {
-              return <ExpandedNote
-                routerProps={routerProps}
-                notes={this.state.notes}
-              />
+                />
+              );
             }}
           />
-
+          <Route
+            path="/note/:noteId"
+            exact
+            render={(routerProps) => {
+              return (
+                <ExpandedNote
+                  routerProps={routerProps}
+                  notes={this.state.notes}
+                />
+              );
+            }}
+          />
         </main>
-
       </div>
-    )
+    );
   }
-
 }
 
 export default App;
